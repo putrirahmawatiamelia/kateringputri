@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Menu;
+use Illuminate\Support\Facades\Storage;
 
 class MenuController extends Controller
 {
@@ -61,7 +62,7 @@ class MenuController extends Controller
     {
         $product = Menu::findOrFail($id);
 
-        return view('merchant/updatemenu', compact('menus'));
+        return view('merchant/updatemenu', compact('product'));
     }
 
     /**
@@ -71,18 +72,37 @@ class MenuController extends Controller
     {
         $product = Menu::findOrFail($id);
 
-        $product->update($request->all());
+        // Jika ada gambar baru yang diunggah
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
+            if ($product->image && Storage::exists('public/'.$product->image)) {
+                Storage::delete('public/'.$product->image);
+            }
 
-        return redirect()->route('merchant/menu')->with('success', 'product updated successfully');
+            // Simpan gambar baru
+            $imagePath = $request->file('image')->store('menu-images', 'public');
+            $product->image = $imagePath; // Update field gambar dengan path baru
+        }
+
+        // Update field lain
+        $product->update($request->except('image'));
+
+        return redirect()->route('merchant/menu')->with('success', 'Menu telah diubah');
     }
 
     public function destroy(string $id)
     {
         $product = Menu::findOrFail($id);
 
+        // Hapus gambar dari storage jika ada
+        if ($product->image && Storage::exists('public/'.$product->image)) {
+            Storage::delete('public/'.$product->image);
+        }
+
+        // Hapus data dari database
         $product->delete();
 
-        return redirect()->route('merchant/menu')->with('success', 'product deleted successfully');
+        return redirect()->route('merchant/menu')->with('success', 'Menu sudah terhapus');
     }
 
 }

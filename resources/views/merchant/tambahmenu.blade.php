@@ -37,6 +37,12 @@
                     <div class="form-group">
                         <label for="image">Gambar</label>
                         <input type="file" class="form-control-file" id="image" name="image" required>
+
+                        <!-- Preview gambar yang baru dipilih -->
+                        <div class="mt-3">
+                            <p>Preview Gambar:</p>
+                            <img id="image-preview" src="#" alt="Preview Gambar" style="display: none; width: 150px; height: auto;">
+                        </div>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Tambah Menu</button>
@@ -46,15 +52,24 @@
     </div>
     <script>
         const imageInput = document.getElementById('image');
+        const imagePreview = document.getElementById('image-preview');
 
         imageInput.addEventListener('change', function() {
-          const file = this.files[0];
-          const allowedTypes = ['image/jpeg', 'image/png'];
+            const file = this.files[0];
+            const allowedTypes = ['image/jpeg', 'image/png'];
 
-          if (!allowedTypes.includes(file.type)) {
-            alert('Hanya file JPG, JPEG, atau PNG yang diperbolehkan.');
-            this.value = ''; // Menghapus file yang dipilih jika tidak valid
-          }
+            if (!allowedTypes.includes(file.type)) {
+                alert('Hanya file JPG, JPEG, atau PNG yang diperbolehkan.');
+                this.value = ''; // Hapus file yang dipilih jika tidak valid
+                imagePreview.style.display = 'none'; // Sembunyikan preview
+            } else {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block'; // Tampilkan preview
+                };
+                reader.readAsDataURL(file);
+            }
         });
     </script>
 </body>
