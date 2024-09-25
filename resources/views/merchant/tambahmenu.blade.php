@@ -47,10 +47,34 @@
 
                     <button type="submit" class="btn btn-primary">Tambah Menu</button>
                 </form>
+                <br/>
+                <a href="{{ route('merchant/menu') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Kembali ke Menu
+                </a>
             </div>
         </div>
     </div>
     <script>
+        const priceInput = document.getElementById('price');
+
+        priceInput.addEventListener('input', function (e) {
+            let value = this.value.replace(/[^,\d]/g, '').toString();
+            if (value) {
+                let split = value.split(',');
+                let sisa = split[0].length % 3;
+                let rupiah = split[0].substr(0, sisa);
+                let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                if (ribuan) {
+                    let separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+
+                rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+                this.value = rupiah;
+            }
+        });
+
         const imageInput = document.getElementById('image');
         const imagePreview = document.getElementById('image-preview');
 

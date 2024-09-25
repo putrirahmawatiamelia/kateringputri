@@ -12,6 +12,8 @@ class MenuController extends Controller
     public function index()
     {
         $menus = auth()->user()->merchant->menus; // Mengambil menu berdasarkan merchant yang sedang login
+        // Dapatkan daftar menu dengan pagination (misalnya 10 per halaman)
+        $menus = Menu::paginate(5);
 
         return view('merchant/menu', compact('menus'));
     }

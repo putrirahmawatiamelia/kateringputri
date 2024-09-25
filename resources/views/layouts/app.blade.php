@@ -32,7 +32,6 @@
 
                     <div data-dropdown-items class="text-sm text-left absolute top-0 right-0 mt-16 mr-4 bg-white rounded border border-gray-400 shadow" x-show="open" @click.away="open = false">
                         <ul>
-                            <li class="px-4 py-3 border-b hover:bg-gray-200"><a href="#">My Profile</a></li>
                             <li class="px-4 py-3 hover:bg-gray-200"><a href="{{ route('logout') }}">Log out</a></li>
                         </ul>
                     </div>
@@ -43,7 +42,7 @@
     </header>
 
     <div class="flex flex-row">
-        <div class="flex flex-col w-64 h-screen overflow-y-auto bg-gray-900 border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
+        <div class="flex flex-col w-64 min-h-screen overflow-y-auto bg-gray-900 border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
             <div class="sidebar text-center bg-gray-900">
                 <div class="text-gray-100 text-xl">
                     <div class="p-2.5 mt-1 flex items-center">
